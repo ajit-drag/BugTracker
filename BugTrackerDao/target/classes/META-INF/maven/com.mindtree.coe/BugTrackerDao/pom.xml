@@ -8,4 +8,16 @@
   <artifactId>BugTrackerDao</artifactId>
   <name>Dao</name>
   <description>This module provide interface between database and bussiness logic</description>
+  <dependencies>
+  	<dependency>
+  		<groupId>com.mindtree.coe</groupId>
+  		<artifactId>BugTrackerModel</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>com.mindtree.coe</groupId>
+  		<artifactId>BugTrackerInterface</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
+  </dependencies>
 </project>
