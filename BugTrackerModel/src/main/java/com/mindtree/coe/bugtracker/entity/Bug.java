@@ -121,7 +121,7 @@ public class Bug {
 	@Override
 	public String toString() {
 		return "Bug [id=" + id + ", title=" + title + ", desciption=" + desciption + ", submittedDate=" + submittedDate
-				+ ", submittedBy=" + submittedBy.getName() + ", supportedBy=" + supportedBy + ", status=" + status + "]";
+				+ ", submittedBy=" + submittedBy + ", supportedBy=" + supportedBy + ", status=" + status + "]";
 	}
 
 }

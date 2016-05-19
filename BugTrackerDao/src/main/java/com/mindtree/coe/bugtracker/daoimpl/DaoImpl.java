@@ -14,7 +14,6 @@ public class DaoImpl extends GenericDao implements Dao {
 
 	public Employee login(String userName, String userPassword) {
 		Session session = getFactory().openSession();
-		Transaction tx = session.beginTransaction();
 		Query query = session.createQuery("from Employee e where e.name=:name and e.password=:password");
 		query.setParameter("name", userName);
 		query.setParameter("password", userPassword);
@@ -37,6 +36,22 @@ public class DaoImpl extends GenericDao implements Dao {
 		tx.commit();
 		session.close();
 		return submittedBug;
+	}
+
+	public List<Bug> getAllBugs() {
+		Session session = getFactory().openSession();
+		Query query = session.createQuery("from Bug");
+		List<Bug> allBugList = query.list();
+		session.close();
+		return allBugList;
+	}
+
+	public List<Employee> getAllSupportList() {
+		Session session = getFactory().openSession();
+		Query query = session.createQuery("from Employee e where e.role='support'");
+		List<Employee> employeeList = query.list();
+		session.close();
+		return employeeList;
 	}
 	
 

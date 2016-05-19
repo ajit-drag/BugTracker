@@ -19,8 +19,9 @@ public class SetUp {
 		Session session = factory.openSession();
 		Transaction tx = session.beginTransaction();
 		
-		String userName = "pqr";
-		String userPasssword = "pqr"; 
+		String userName = "admin";
+		String userPasssword = "admin";
+		String role = "admin";
 		MessageDigest digest = MessageDigest.getInstance("SHA-1");
 		byte[] hashedBytes = digest.digest(userPasssword.getBytes("UTF-8"));
 		StringBuffer hashedPassword = new StringBuffer();
@@ -28,11 +29,11 @@ public class SetUp {
             hashedPassword.append(Integer.toString((hashedBytes[i] & 0xff) + 0x100, 16)
                     .substring(1));
         }
-		
-        session.save(new Employee(userName, "support", hashedPassword.toString()));
+        session.save(new Employee(userName, role, hashedPassword.toString()));
         
-        userName = "xyz";
-		userPasssword = "xyz"; 
+        userName = "ajit";
+		userPasssword = "ajit";
+		role = "user";
 		digest = MessageDigest.getInstance("SHA-1");
 		hashedBytes = digest.digest(userPasssword.getBytes("UTF-8"));
 		hashedPassword = new StringBuffer();
@@ -40,13 +41,49 @@ public class SetUp {
             hashedPassword.append(Integer.toString((hashedBytes[i] & 0xff) + 0x100, 16)
                     .substring(1));
         }
-        session.save(new Employee(userName, "support", hashedPassword.toString()));
+        session.save(new Employee(userName, role, hashedPassword.toString()));
+        
+        userName = "singh";
+		userPasssword = "singh";
+		role = "user";
+		digest = MessageDigest.getInstance("SHA-1");
+		hashedBytes = digest.digest(userPasssword.getBytes("UTF-8"));
+		hashedPassword = new StringBuffer();
+        for (int i = 0; i < hashedBytes.length; i++) {
+            hashedPassword.append(Integer.toString((hashedBytes[i] & 0xff) + 0x100, 16)
+                    .substring(1));
+        }
+        session.save(new Employee(userName, role, hashedPassword.toString()));
+        
+        userName = "xyz";
+		userPasssword = "xyz";
+		role = "support";
+		digest = MessageDigest.getInstance("SHA-1");
+		hashedBytes = digest.digest(userPasssword.getBytes("UTF-8"));
+		hashedPassword = new StringBuffer();
+        for (int i = 0; i < hashedBytes.length; i++) {
+            hashedPassword.append(Integer.toString((hashedBytes[i] & 0xff) + 0x100, 16)
+                    .substring(1));
+        }
+        session.save(new Employee(userName, role, hashedPassword.toString()));
+        
+        userName = "abc";
+		userPasssword = "abc";
+		role = "support";
+		digest = MessageDigest.getInstance("SHA-1");
+		hashedBytes = digest.digest(userPasssword.getBytes("UTF-8"));
+		hashedPassword = new StringBuffer();
+        for (int i = 0; i < hashedBytes.length; i++) {
+            hashedPassword.append(Integer.toString((hashedBytes[i] & 0xff) + 0x100, 16)
+                    .substring(1));
+        }
+        session.save(new Employee(userName, role, hashedPassword.toString()));
         
 		tx.commit();
 		factory.close();*/
 		
 		DaoImpl daoImpl = new DaoImpl();
-		System.out.println(daoImpl.login("ajit", "8a220a37a4a3f11ce03af22a81879ba01e62683c").getRole());
+		System.out.println(daoImpl.login("ajit", "8a220a37a4a3f11ce03af22a81879ba01e62683c").getUserBugList());
 
 		
 

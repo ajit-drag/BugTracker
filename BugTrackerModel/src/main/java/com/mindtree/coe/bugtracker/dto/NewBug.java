@@ -1,4 +1,4 @@
-package dto;
+package com.mindtree.coe.bugtracker.dto;
 
 import com.mindtree.coe.bugtracker.entity.Employee;
 

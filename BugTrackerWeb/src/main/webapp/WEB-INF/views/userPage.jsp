@@ -9,9 +9,31 @@
 </head>
 <body>
 	<form name="submit-bug" method="post" action="submitBug">
-		Bug Title : <input type="text" name="bug-title"><br>
-		Bug Description : <textarea rows="20" cols="50" name="bug-description"></textarea>
+		Bug Title : <input type="text" name="bug-title"><br> Bug
+		Description :
+		<textarea rows="8" cols="50" name="bug-description"></textarea>
 		<input type="submit" value="Submit Bug">
 	</form>
+	<br><br>
+	<table id="submitted-bug" border="1">
+		<tr>
+			<th>BugId</th>
+			<th>Bug Title</th>
+			<th>Bug Description</th>
+			<th>Submitted Date</th>
+			<th>Supported By</th>
+			<th>Status</th>
+		</tr>
+		<c:forEach var="bug" items="${employee.getUserBugList()}">
+			<tr>
+				<td>${bug.getId()}</td>
+				<td>${bug.getTitle()}</td>
+				<td>${bug.getDesciption()}</td>
+				<td>${bug.getSubmittedDate()}</td>
+				<td>${bug.getSupportedBy()}</td>
+				<td>${bug.getStatus()}</td>
+			</tr>
+		</c:forEach>
+	</table>
 </body>
 </html>

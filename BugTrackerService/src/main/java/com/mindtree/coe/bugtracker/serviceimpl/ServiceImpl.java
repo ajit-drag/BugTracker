@@ -3,16 +3,19 @@ package com.mindtree.coe.bugtracker.serviceimpl;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.mindtree.coe.bugtracker.dao.Dao;
 import com.mindtree.coe.bugtracker.daoimpl.DaoImpl;
+import com.mindtree.coe.bugtracker.dto.BugDto;
+import com.mindtree.coe.bugtracker.dto.BugDtoListDto;
+import com.mindtree.coe.bugtracker.dto.NewBug;
 import com.mindtree.coe.bugtracker.entity.Bug;
 import com.mindtree.coe.bugtracker.entity.Employee;
 import com.mindtree.coe.bugtracker.entity.Status;
 import com.mindtree.coe.bugtracker.service.Service;
-
-import dto.NewBug;
 
 public class ServiceImpl implements Service {
 
@@ -49,6 +52,33 @@ public class ServiceImpl implements Service {
 		bug.setStatus(Status.pending);
 		Bug submittedBug = daoImpl.submitBug(bug);
 		return submittedBug;
+	}
+
+	@Override
+	public BugDtoListDto getAllBugs() {
+		List<Bug> allBugList = daoImpl.getAllBugs();
+		List<BugDto> bugDtoList = new ArrayList<BugDto>();
+		BugDtoListDto bugDtoListDto = new BugDtoListDto();
+
+		for(Bug bug : allBugList){
+			BugDto bugDto = new BugDto();
+			System.out.println(bug);
+			bugDto.setId(bug.getId());
+			bugDto.setTitle(bug.getTitle());
+			bugDto.setDescription(bug.getDesciption());
+			bugDto.setSubmittedDate(bug.getDesciption());
+			bugDto.setSubmittedBy(bug.getSubmittedBy());
+			bugDto.setSupportedBy(bug.getSupportedBy());
+			bugDto.setStatus(bug.getStatus());
+			bugDtoList.add(bugDto);
+		}
+		bugDtoListDto.setBugDtoList(bugDtoList);
+		return bugDtoListDto;
+	}
+
+	@Override
+	public List<Employee> getAllSupportList() {
+		return daoImpl.getAllSupportList();
 	}
 
 }
