@@ -1,5 +1,7 @@
 package com.mindtree.coe.bugtracker.dto;
 
+import java.util.Date;
+
 import com.mindtree.coe.bugtracker.entity.Employee;
 import com.mindtree.coe.bugtracker.entity.Status;
 
@@ -7,65 +9,76 @@ public class BugDto {
 	private long id;
 	private String title;
 	private String description;
-	private String submittedDate;
+	private Date submittedDate;
 	private Employee submittedBy;
-	private Employee supportedBy;
+	private String supportedById;
 	private Status status;
+
 	public BugDto() {
 		super();
 	}
-	public BugDto(long id, String title, String description, String submittedDate, Employee submittedBy,
-			Employee supportedBy, Status status) {
-		super();
-		this.id = id;
-		this.title = title;
-		this.description = description;
-		this.submittedDate = submittedDate;
-		this.submittedBy = submittedBy;
-		this.supportedBy = supportedBy;
-		this.status = status;
-	}
+
 	public long getId() {
 		return id;
 	}
+
 	public void setId(long id) {
 		this.id = id;
 	}
+
 	public String getTitle() {
 		return title;
 	}
+
 	public void setTitle(String title) {
 		this.title = title;
 	}
+
 	public String getDescription() {
 		return description;
 	}
+
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public String getSubmittedDate() {
+
+	public Date getSubmittedDate() {
 		return submittedDate;
 	}
-	public void setSubmittedDate(String submittedDate) {
+
+	public void setSubmittedDate(Date submittedDate) {
 		this.submittedDate = submittedDate;
 	}
+
 	public Employee getSubmittedBy() {
 		return submittedBy;
 	}
+
 	public void setSubmittedBy(Employee submittedBy) {
 		this.submittedBy = submittedBy;
 	}
-	public Employee getSupportedBy() {
-		return supportedBy;
+
+	public String getSupportedById() {
+		return supportedById;
 	}
-	public void setSupportedBy(Employee supportedBy) {
-		this.supportedBy = supportedBy;
+
+	public void setSupportedById(String supportedById) {
+		this.supportedById = supportedById;
 	}
+
 	public Status getStatus() {
 		return status;
 	}
+
 	public void setStatus(Status status) {
 		this.status = status;
+	}
+
+	@Override
+	public String toString() {
+		return "BugDto [id=" + id + ", title=" + title + ", description=" + description + ", submittedDate="
+				+ submittedDate + ", submittedBy=" + submittedBy + ", supportedById=" + supportedById + ", status="
+				+ status + "]";
 	}
 	
 }

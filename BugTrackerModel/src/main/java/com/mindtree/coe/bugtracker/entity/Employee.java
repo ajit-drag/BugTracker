@@ -96,6 +96,7 @@ public class Employee {
 	}
 	@Override
 	public String toString() {
-		return "Employee [name=" + name + "]";
+		return "Employee [id=" + id + ", name=" + name + ", role=" + role + ", password=" + password + "]";
 	}
+	
 }

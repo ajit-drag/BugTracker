@@ -1,7 +1,5 @@
 package com.mindtree.coe.bugtracker.controller;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -11,13 +9,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.mindtree.coe.bugtracker.dto.BugDto;
 import com.mindtree.coe.bugtracker.dto.BugDtoListDto;
+import com.mindtree.coe.bugtracker.dto.BugSupportDto;
+import com.mindtree.coe.bugtracker.dto.BugSupportDtoListDto;
 import com.mindtree.coe.bugtracker.dto.NewBug;
 import com.mindtree.coe.bugtracker.entity.Bug;
 import com.mindtree.coe.bugtracker.entity.Employee;
-import com.mindtree.coe.bugtracker.entity.Status;
 import com.mindtree.coe.bugtracker.service.Service;
+import com.mindtree.coe.bugtracker.serviceimpl.EntityToDto;
 import com.mindtree.coe.bugtracker.serviceimpl.ServiceImpl;
 
 @Controller
@@ -40,6 +39,7 @@ public class FrontController {
 
 		serviceImpl = new ServiceImpl();
 		employee = serviceImpl.login(userName, userPassword);
+		EntityToDto entityToDto = new EntityToDto();
 		if (employee != null) {
 			switch (employee.getRole()) {
 			case "user": {
@@ -49,6 +49,8 @@ public class FrontController {
 						break;
 			case "support":{
 							model.addObject("employee", employee);
+							BugSupportDtoListDto bugSupportDtoListDto = entityToDto.mapBugListToBugSupportDtoListDto(employee.getSupportBugList());
+							model.addObject("bugSupportDtoListDto",bugSupportDtoListDto);
 							model.setViewName(employee.getRole() + "Page");
 						};
 						break;
@@ -80,7 +82,6 @@ public class FrontController {
 		newBug.setDescription(request.getParameter("bug-description"));
 		newBug.setSubmittedBy(employee);
 		Bug bug = serviceImpl.submitBug(newBug);
-		System.out.println(bug.toString());
 		model.addObject("employee", employee);
 		model.setViewName(employee.getRole() + "Page");
 		return model;
@@ -88,9 +89,23 @@ public class FrontController {
 	
 	@RequestMapping(value="/assignBugs",method = RequestMethod.POST)
 	public ModelAndView assignBugs(@ModelAttribute("bugDtoListDto") BugDtoListDto bugDtoListDto){
-		System.out.println("sdad");
-		System.out.println(bugDtoListDto.getBugDtoList().size());
+		ModelAndView model  = new ModelAndView();
+		int bugsAssigned = 0;
+		serviceImpl = new ServiceImpl();
+		bugsAssigned = serviceImpl.assignBugs(bugDtoListDto);
+		if(bugsAssigned!=0){
+			model.addObject("message",bugsAssigned+" bugs assigned.");
+		}
 		return new ModelAndView("index");
+		
+	}
+	@RequestMapping(value="/assignBugStatus", method = RequestMethod.POST)
+	ModelAndView assignBugStatus(@ModelAttribute("bugSupportDtoListDto") BugSupportDtoListDto bugSupportDtoListDto){
+		ModelAndView model = new ModelAndView();
+		serviceImpl = new ServiceImpl();
+		int isDone = serviceImpl.assignBugStatus(bugSupportDtoListDto);
+		
+		return null;
 		
 	}
 }

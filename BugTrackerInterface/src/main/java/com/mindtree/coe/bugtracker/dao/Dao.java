@@ -10,4 +10,7 @@ public interface Dao {
 	Bug submitBug(Bug bug);
 	List<Bug> getAllBugs();
 	List<Employee> getAllSupportList();
+	Bug getBug(long bugId);
+	Employee getSupportEmployee(long supportEmployeeId);
+	int assignBugs(List<Bug> assignedBugList);
 }

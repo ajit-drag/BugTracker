@@ -53,6 +53,33 @@ public class DaoImpl extends GenericDao implements Dao {
 		session.close();
 		return employeeList;
 	}
+
+	public Bug getBug(long bugId) {
+		Session session = getFactory().openSession();
+		Bug submittedBug = session.get(Bug.class, bugId);
+		session.close();
+		return submittedBug;
+	}
+
+	public Employee getSupportEmployee(long supportEmployeeId) {
+		Session session = getFactory().openSession();
+		Employee employee = session.get(Employee.class, supportEmployeeId);
+		session.close();
+		return employee;
+	}
+
+	public int assignBugs(List<Bug> assignedBugList) {
+		int bugsAssigned=0;
+		for(Bug bug : assignedBugList){
+			Session session = getFactory().openSession();
+			Transaction tx = session.beginTransaction();
+			session.update(bug);
+			++bugsAssigned;
+			tx.commit();
+			session.close();
+		}
+		return bugsAssigned;
+	}
 	
 
 }

@@ -11,6 +11,8 @@ import com.mindtree.coe.bugtracker.dao.Dao;
 import com.mindtree.coe.bugtracker.daoimpl.DaoImpl;
 import com.mindtree.coe.bugtracker.dto.BugDto;
 import com.mindtree.coe.bugtracker.dto.BugDtoListDto;
+import com.mindtree.coe.bugtracker.dto.BugSupportDto;
+import com.mindtree.coe.bugtracker.dto.BugSupportDtoListDto;
 import com.mindtree.coe.bugtracker.dto.NewBug;
 import com.mindtree.coe.bugtracker.entity.Bug;
 import com.mindtree.coe.bugtracker.entity.Employee;
@@ -60,17 +62,18 @@ public class ServiceImpl implements Service {
 		List<BugDto> bugDtoList = new ArrayList<BugDto>();
 		BugDtoListDto bugDtoListDto = new BugDtoListDto();
 
-		for(Bug bug : allBugList){
-			BugDto bugDto = new BugDto();
-			System.out.println(bug);
-			bugDto.setId(bug.getId());
-			bugDto.setTitle(bug.getTitle());
-			bugDto.setDescription(bug.getDesciption());
-			bugDto.setSubmittedDate(bug.getDesciption());
-			bugDto.setSubmittedBy(bug.getSubmittedBy());
-			bugDto.setSupportedBy(bug.getSupportedBy());
-			bugDto.setStatus(bug.getStatus());
-			bugDtoList.add(bugDto);
+		for (Bug bug : allBugList) {
+			if (bug.getSupportedBy() == null) {
+				BugDto bugDto = new BugDto();
+				System.out.println(bug);
+				bugDto.setId(bug.getId());
+				bugDto.setTitle(bug.getTitle());
+				bugDto.setDescription(bug.getDesciption());
+				bugDto.setSubmittedDate(bug.getSubmittedDate());
+				bugDto.setSubmittedBy(bug.getSubmittedBy());
+				bugDto.setStatus(bug.getStatus());
+				bugDtoList.add(bugDto);
+			}
 		}
 		bugDtoListDto.setBugDtoList(bugDtoList);
 		return bugDtoListDto;
@@ -81,4 +84,36 @@ public class ServiceImpl implements Service {
 		return daoImpl.getAllSupportList();
 	}
 
+	@Override
+	public int assignBugs(BugDtoListDto bugDtoListDto) {
+		List<BugDto> bugDtoList = bugDtoListDto.getBugDtoList();
+		List<Bug> assignedBugList = new ArrayList<Bug>();
+		for(BugDto bugDto : bugDtoList){
+			if(!bugDto.getSupportedById().equals("")){
+				Bug bug = daoImpl.getBug(bugDto.getId());
+				bug.setSupportedBy(daoImpl.getSupportEmployee(Long.parseLong(bugDto.getSupportedById())));
+				bug.setStatus(Status.inProgress);
+				assignedBugList.add(bug);
+			}
+		}
+		return daoImpl.assignBugs(assignedBugList);
+		
+	}
+
+	@Override
+	public int assignBugStatus(BugSupportDtoListDto bugSupportDtoListDto) {
+		List<BugSupportDto> bugSupportDtoList = bugSupportDtoListDto.getBugSupportDtoList();
+		List<Bug> bugList = new ArrayList<Bug>();
+		for(BugSupportDto bugSupportDto : bugSupportDtoList){
+			if(bugSupportDto.getIsResolved()!=null){
+				Bug bug = daoImpl.getBug(bugSupportDto.getId());
+				bug.setStatus(Status.resolved);
+				bugList.add(bug);
+			}
+		}
+		return daoImpl.assignBugs(bugList);
+	}
+
+	
+	
 }

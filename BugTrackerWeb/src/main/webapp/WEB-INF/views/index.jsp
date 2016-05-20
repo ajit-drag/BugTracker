@@ -7,6 +7,8 @@
 <title>Bug Tracker</title>
 </head>
 <body>
+
+	<h3 style="color:green;">${message}</h3>
 	<form action="login" method="post" >
 		User Name : <input name="user-name" type="text"><br>
 		Password : <input name="user-password" type="password"><br>

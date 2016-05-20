@@ -30,7 +30,7 @@
 				<td>${bug.getTitle()}</td>
 				<td>${bug.getDesciption()}</td>
 				<td>${bug.getSubmittedDate()}</td>
-				<td>${bug.getSupportedBy()}</td>
+				<td>${bug.getSupportedBy().getName()}</td>
 				<td>${bug.getStatus()}</td>
 			</tr>
 		</c:forEach>
