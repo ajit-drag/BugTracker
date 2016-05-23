@@ -23,6 +23,8 @@ import com.mindtree.coe.bugtracker.serviceimpl.ServiceImpl;
 public class FrontController {
 	Service serviceImpl = null;
 	Employee employee = null;
+	String userName;
+	String userPassword;
 
 	@RequestMapping("/")
 	public String showWelcome(ModelAndView model) {
@@ -34,8 +36,8 @@ public class FrontController {
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public ModelAndView login(HttpServletRequest request) {
 		ModelAndView model = new ModelAndView();
-		String userName = request.getParameter("user-name");
-		String userPassword = request.getParameter("user-password");
+		userName = request.getParameter("user-name");
+		userPassword = request.getParameter("user-password");
 
 		serviceImpl = new ServiceImpl();
 		employee = serviceImpl.login(userName, userPassword);
@@ -82,6 +84,7 @@ public class FrontController {
 		newBug.setDescription(request.getParameter("bug-description"));
 		newBug.setSubmittedBy(employee);
 		Bug bug = serviceImpl.submitBug(newBug);
+		model.addObject("message", "Bug detail successfully submitted. And will appear in bug status in next login.");
 		model.addObject("employee", employee);
 		model.setViewName(employee.getRole() + "Page");
 		return model;
@@ -96,7 +99,11 @@ public class FrontController {
 		if(bugsAssigned!=0){
 			model.addObject("message",bugsAssigned+" bugs assigned.");
 		}
-		return new ModelAndView("index");
+		bugDtoListDto=serviceImpl.getAllBugs();
+		model.addObject("bugDtoListDto",bugDtoListDto);
+		model.addObject("supportList", serviceImpl.getAllSupportList());
+		model.setViewName("adminPage");
+		return model;
 		
 	}
 	@RequestMapping(value="/assignBugStatus", method = RequestMethod.POST)
@@ -104,8 +111,18 @@ public class FrontController {
 		ModelAndView model = new ModelAndView();
 		serviceImpl = new ServiceImpl();
 		int isDone = serviceImpl.assignBugStatus(bugSupportDtoListDto);
+		EntityToDto entityToDto = new EntityToDto();
+		employee = serviceImpl.login(userName,userPassword);
+		bugSupportDtoListDto = entityToDto.mapBugListToBugSupportDtoListDto(employee.getSupportBugList());
 		
-		return null;
+		for(BugSupportDto bugSupportDto : bugSupportDtoListDto.getBugSupportDtoList()){
+			System.out.println(bugSupportDto.getIsResolved()+" :: "+bugSupportDto.getId());
+		}
+		
+		model.addObject("bugSupportDtoListDto",bugSupportDtoListDto);
+		model.addObject("message", "Bugs resolved successfully.");
+		model.setViewName("supportPage");
+		return model;
 		
 	}
 }
