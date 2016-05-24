@@ -15,7 +15,10 @@
 .navbar,.form-control{
 	border-radius: 0px; 
 }
-
+.footer-text {
+	text-align: center;
+	color: grey;
+}
 </style>
 </head>
 <body>
@@ -47,7 +50,7 @@
 	</div>
 	<nav class="navbar navbar-inverse navbar-fixed-bottom">
 	<div class="container-fluid">
-		<span></span>
+		<div class="footer-text">BugTracker&copy;2016</div>
 	</div>
 	</nav>
 </body>
