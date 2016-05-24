@@ -3,6 +3,8 @@ package com.mindtree.coe.bugtracker.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,14 +28,60 @@ public class FrontController {
 	String userName;
 	String userPassword;
 
-	@RequestMapping("/")
+	@RequestMapping(value={"/","/welcome**"},method=RequestMethod.GET)
+	public ModelAndView welcomePage(){
+		ModelAndView model = new ModelAndView();
+		 employee=(Employee)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		/*System.out.println(((User)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getAuthorities());
+		model.addObject("title", "Spring Security Custom Login Form");
+		model.addObject("message", "This is welcome page!");
+		model.setViewName("hello");*/
+		 
+		 EntityToDto entityToDto = new EntityToDto();
+			if (employee != null) {
+				switch (employee.getRole()) {
+				case "user": {
+								model.addObject("employee", employee);
+								model.setViewName(employee.getRole() + "Page");
+							};
+							break;
+				case "support":{
+								model.addObject("employee", employee);
+								BugSupportDtoListDto bugSupportDtoListDto = entityToDto.mapBugListToBugSupportDtoListDto(employee.getSupportBugList());
+								model.addObject("bugSupportDtoListDto",bugSupportDtoListDto);
+								model.setViewName(employee.getRole() + "Page");
+							};
+							break;
+				case "admin": {
+								BugDtoListDto bugDtoListDto;
+								bugDtoListDto=serviceImpl.getAllBugs();
+								model.addObject("bugDtoListDto",bugDtoListDto);
+								model.addObject("supportList", serviceImpl.getAllSupportList());
+								model.setViewName(employee.getRole() + "Page");
+				}
+				default:{}
+				}
+
+				model.addObject("employee", employee);
+				model.setViewName(employee.getRole() + "Page");
+			} else {
+				System.out.println("Login not SuccessFull");
+				model.setViewName("index");
+			} 
+		
+		 
+		 
+		return model; 
+	}
+	
+	
+	
+	@RequestMapping("/login")
 	public String showWelcome(ModelAndView model) {
-		System.out.println("Inside Controller");
-		model.addObject("msg", "Hiiiii....");
-		return "index";
+		return "login";
 	}
 
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	@RequestMapping(value = "/login2", method = RequestMethod.POST)
 	public ModelAndView login(HttpServletRequest request) {
 		ModelAndView model = new ModelAndView();
 		userName = request.getParameter("user-name");
