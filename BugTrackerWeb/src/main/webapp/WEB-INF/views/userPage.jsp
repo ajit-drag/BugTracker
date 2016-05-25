@@ -21,8 +21,16 @@
 	text-align: center;
 	color: grey;
 }
-.container{
-	margin-bottom:100px;
+
+.container {
+	margin-bottom: 100px;
+}
+.dropdown-text{
+	 background:none;
+    border:none;
+    color:grey;
+    margin:10px 20px;
+    padding:0;
 }
 </style>
 </head>
@@ -33,8 +41,23 @@
 			<a class="navbar-brand" href="#">Bug Tracker</a>
 		</div>
 		<ul class="nav navbar-nav navbar-right">
-			<li><a href="#"><span class="glyphicon glyphicon-user"></span>
-					${employee.name}</a></li>
+			<li><div class="dropdown">
+					<button class="dropdown-text dropdown-toggle" type="button"
+						data-toggle="dropdown">
+						<span class="glyphicon glyphicon-user"></span> ${employee.name}<span
+							class="caret"></span>
+					</button>
+					<ul class="dropdown-menu">
+						<li><a href="#">
+								<form action="<c:url value='j_spring_security_logout' />"
+									method="post">
+									<input type="submit" class="dropdown-text" value="Logout" /> <input
+										type="hidden" name="${_csrf.parameterName}"
+										value="${_csrf.token}" />
+								</form>
+						</a></li>
+					</ul>
+				</div></li>
 		</ul>
 	</div>
 	</nav>
@@ -51,6 +74,7 @@
 			<div class="tab-content">
 				<c:if test="${not empty message}">
 					<div class="alert alert-success">
+						<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 						<strong>Success!</strong> ${message }
 					</div>
 				</c:if>
@@ -67,6 +91,8 @@
 								name="bug-description"></textarea>
 						</div>
 						<button type="submit" class="btn btn-default">Submit</button>
+						<input type="hidden" name="${_csrf.parameterName}"
+							value="${_csrf.token}" />
 					</form>
 				</div>
 				<div id="view-bug-status" class="tab-pane fade">
@@ -106,11 +132,11 @@
 				</div>
 			</div>
 		</div>
-		</div>
-		<nav class="navbar navbar-inverse navbar-fixed-bottom">
-		<div class="container-fluid">
-			<div class="footer-text">BugTracker&copy;2016</div>
-		</div>
-		</nav>
+	</div>
+	<nav class="navbar navbar-inverse navbar-fixed-bottom">
+	<div class="container-fluid">
+		<div class="footer-text">BugTracker&copy;2016</div>
+	</div>
+	</nav>
 </body>
 </html>

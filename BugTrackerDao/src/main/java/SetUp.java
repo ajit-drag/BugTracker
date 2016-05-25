@@ -1,14 +1,7 @@
 import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
-
 import com.mindtree.coe.bugtracker.daoimpl.DaoImpl;
-import com.mindtree.coe.bugtracker.entity.Employee;
 
 
 

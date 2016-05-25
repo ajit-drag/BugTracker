@@ -26,7 +26,7 @@ public class ServiceImpl implements Service {
 	public ServiceImpl() {
 		daoImpl = new DaoImpl();
 	}
-
+	
 	public Employee login(String userName, String userPassword) {
 
 		MessageDigest digest;
@@ -43,7 +43,11 @@ public class ServiceImpl implements Service {
 		}
 		return daoImpl.login(userName, hashedPassword.toString());
 	}
-
+	@Override
+	public Employee getEmployee(Employee employee) {
+		return daoImpl.getEmployee(employee);
+	}
+	
 	@Override
 	public Bug submitBug(NewBug newBug) {
 		Bug bug = new Bug();
@@ -58,6 +62,7 @@ public class ServiceImpl implements Service {
 
 	@Override
 	public BugDtoListDto getAllBugs() {
+		System.out.println("Inside getAllBugs::Service");
 		List<Bug> allBugList = daoImpl.getAllBugs();
 		List<BugDto> bugDtoList = new ArrayList<BugDto>();
 		BugDtoListDto bugDtoListDto = new BugDtoListDto();
@@ -113,7 +118,6 @@ public class ServiceImpl implements Service {
 		}
 		return daoImpl.assignBugs(bugList);
 	}
-
 	
 	
 }

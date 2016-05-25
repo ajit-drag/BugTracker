@@ -2,7 +2,6 @@ package com.mindtree.coe.bugtracker.service;
 
 import java.util.List;
 
-import com.mindtree.coe.bugtracker.dto.BugDto;
 import com.mindtree.coe.bugtracker.dto.BugDtoListDto;
 import com.mindtree.coe.bugtracker.dto.BugSupportDtoListDto;
 import com.mindtree.coe.bugtracker.dto.NewBug;
@@ -28,6 +27,11 @@ public interface Service {
 	 * @return
 	 */
 	Employee login(String userName,String userPassword);
+	/**
+	 * @param employee
+	 * @return
+	 */
+	Employee getEmployee(Employee employee);
 	/**
 	 * @param newBug
 	 * @return

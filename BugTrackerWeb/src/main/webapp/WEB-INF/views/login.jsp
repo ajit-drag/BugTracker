@@ -36,10 +36,16 @@
 			<div class="col-sm-4"></div>
 			<div class="col-sm-4">
 				<c:if test="${not empty error}">
-					<div class="error">${error}</div>
+					<div class="alert alert-danger">
+						<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+						<div class="error">${error}</div>
+					</div>
 				</c:if>
 				<c:if test="${not empty msg}">
-					<div class="msg">${msg}</div>
+					<div class="alert alert-success">
+					 	<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+						<div class="msg">${msg}</div>
+					</div>
 				</c:if>
 				<form role="form" action="<c:url value='j_spring_security_check' />"
 					method="post">

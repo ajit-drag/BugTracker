@@ -23,6 +23,13 @@
 	text-align: center;
 	color: grey;
 }
+.dropdown-text{
+	 background:none;
+    border:none;
+    color:grey;
+    margin:10px 20px;
+    padding:0;
+}
 </style>
 </head>
 <body>
@@ -32,14 +39,34 @@
 			<a class="navbar-brand" href="#">Bug Tracker</a>
 		</div>
 		<ul class="nav navbar-nav navbar-right">
-			<li><a href="#"><span class="glyphicon glyphicon-user"></span>
-					${employee.name}</a></li>
+			<li><div class="dropdown">
+					<button class="dropdown-text dropdown-toggle" type="button"
+						data-toggle="dropdown">
+						<span class="glyphicon glyphicon-user"></span> ${employee.name}<span
+							class="caret"></span>
+					</button>
+					<ul class="dropdown-menu">
+						<li><a href="#">
+								<form action="<c:url value='j_spring_security_logout' />"
+									method="post">
+									<input type="submit" class="dropdown-text" value="Logout" /> <input
+										type="hidden" name="${_csrf.parameterName}"
+										value="${_csrf.token}" />
+								</form>
+						</a></li>
+					</ul>
+				</div></li>
 		</ul>
 	</div>
 	</nav>
 	<div class="container">
 		<div class="row">
-		<c:if test="${not empty message}"><div class="alert alert-success"><strong>Success!</strong> ${message }</div></c:if>
+			<c:if test="${not empty message}">
+				<div class="alert alert-success">
+					<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><strong>Success!</strong>
+					${message }
+				</div>
+			</c:if>
 			<form:form name="bug-assignment" action="assignBugs" method="post"
 				modelAttribute="bugDtoListDto" autocomplete="false">
 				<table class="table table-hover">
@@ -88,13 +115,15 @@
 					</tbody>
 				</table>
 				<input type="submit" value="Submit All">
+				<input type="hidden" name="${_csrf.parameterName}"
+					value="${_csrf.token}" />
 			</form:form>
 		</div>
-		</div>
-		<nav class="navbar navbar-inverse navbar-fixed-bottom">
-		<div class="container-fluid">
-			<div class="footer-text">BugTracker&copy;2016</div>
-		</div>
-		</nav>
+	</div>
+	<nav class="navbar navbar-inverse navbar-fixed-bottom">
+	<div class="container-fluid">
+		<div class="footer-text">BugTracker&copy;2016</div>
+	</div>
+	</nav>
 </body>
 </html>

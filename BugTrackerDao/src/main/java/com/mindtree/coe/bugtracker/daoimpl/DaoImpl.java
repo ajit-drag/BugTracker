@@ -26,6 +26,15 @@ public class DaoImpl extends GenericDao implements Dao {
 		}
 	}
 
+
+	@Override
+	public Employee getEmployee(Employee employee) {
+		Session session = getFactory().openSession();
+		Employee employee2 =session.get(Employee.class, employee.getId());
+		session.close();
+		return employee2;
+	}
+	
 	public Bug submitBug(Bug bug) {
 		Session session = getFactory().openSession();
 		Transaction tx = session.beginTransaction();
@@ -39,6 +48,7 @@ public class DaoImpl extends GenericDao implements Dao {
 	}
 
 	public List<Bug> getAllBugs() {
+		System.out.println("Inside getAllBugs::DAO");
 		Session session = getFactory().openSession();
 		Query query = session.createQuery("from Bug");
 		List<Bug> allBugList = query.list();
@@ -48,7 +58,7 @@ public class DaoImpl extends GenericDao implements Dao {
 
 	public List<Employee> getAllSupportList() {
 		Session session = getFactory().openSession();
-		Query query = session.createQuery("from Employee e where e.role='support'");
+		Query query = session.createQuery("from Employee e where e.role='ROLE_SUPPORT'");
 		List<Employee> employeeList = query.list();
 		session.close();
 		return employeeList;
@@ -80,6 +90,7 @@ public class DaoImpl extends GenericDao implements Dao {
 		}
 		return bugsAssigned;
 	}
+
 	
 
 }

@@ -19,25 +19,24 @@ import com.mindtree.coe.bugtracker.entity.Employee;
 import com.mindtree.coe.bugtracker.service.Service;
 import com.mindtree.coe.bugtracker.serviceimpl.ServiceImpl;
 
-
 public class CustomAuthenticationProvider implements AuthenticationProvider {
-	
+
 	Service service = new ServiceImpl();
-	Employee employee= null;
-	
+	Employee employee = null;
+
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-		
+
 		final String name = authentication.getName();
 		final String password = authentication.getCredentials().toString();
 		String userRole = authenticateUser(name, password);
-		if(userRole!=null){
+		if (userRole != null) {
 			final List<GrantedAuthority> grantedAuthorityList = new ArrayList<>();
 			grantedAuthorityList.add(new SimpleGrantedAuthority(userRole));
 			final UserDetails principal = new User(String.valueOf(employee.getId()), password, grantedAuthorityList);
-			final Authentication authentication2 = new UsernamePasswordAuthenticationToken(employee, password,grantedAuthorityList);
+			final Authentication authentication2 = new UsernamePasswordAuthenticationToken(employee, password,
+					grantedAuthorityList);
 			return authentication2;
-		}
-		else{
+		} else {
 			return null;
 		}
 	}
@@ -45,12 +44,12 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 	public boolean supports(Class<?> authentication) {
 		return authentication.equals(UsernamePasswordAuthenticationToken.class);
 	}
-	
-	public String giveHash(String string,String strategy){
+
+	public String giveHash(String string, String strategy) {
 		MessageDigest digest;
 		byte[] hashedBytes = null;
 		try {
-			digest = MessageDigest.getInstance(strategy/*"SHA-1"*/);
+			digest = MessageDigest.getInstance(strategy);
 			hashedBytes = digest.digest(string.getBytes("UTF-8"));
 		} catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
 			e.printStackTrace();
@@ -61,15 +60,13 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 		}
 		return hashedPassword.toString();
 	}
-	
-	public String authenticateUser(String userName,String userPassword){
+
+	public String authenticateUser(String userName, String userPassword) {
 		employee = service.login(userName, userPassword);
-		return employee.getRole();
-		
-		/*if(userName.equalsIgnoreCase("ajit")&& giveHash(userPassword, "SHA-1").equals("8a220a37a4a3f11ce03af22a81879ba01e62683c")){
-			return "ROLE_USER";
-		}else{		
-		return null;
-		}*/
+		if (employee!= null) {
+			return employee.getRole();
+		} else {
+			return null;
+		}
 	}
 }
